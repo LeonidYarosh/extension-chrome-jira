@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="vendor/material.min.css" />
+    <script src="vendor/material.min.js"></script>
+    <link rel="stylesheet" href="vendor/icon.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="demo-list-action mdl-list">
+        <div class="mdl-list__item">
+          <span class="mdl-list__item-primary-content title">
+            <span>URL:</span>
+          </span>
+
+          <span class="mdl-list__item-secondary-content content">
+            <input
+              class="mdl-list__item-secondary-action mdl-textfield__input"
+              type="text"
+              v-model="URL"
+            />
+          </span>
+        </div>
+
+        <div class="mdl-list__item">
+          <span class="mdl-list__item-primary-content title">
+            <span>Тело запроса:</span>
+          </span>
+
+          <span class="mdl-list__item-secondary-content content">
+            <div
+              class="mdl-list__item-secondary-action mdl-textfield mdl-js-textfield"
+            >
+              <textarea class="mdl-textfield__input" type="text" rows="4">
+                {{ requestBody }}
+              </textarea>
+            </div>
+          </span>
+        </div>
+
+        <div class="mdl-list__item">
+          <span class="mdl-list__item-primary-content title">
+            <span>Тело ответа:</span>
+          </span>
+          <span class="mdl-list__item-secondary-content content">
+            <div class="mdl-textfield mdl-js-textfield">
+              <textarea class="mdl-textfield__input" type="text" rows="4">
+                {{ responseBody }}
+              </textarea>
+            </div>
+          </span>
+        </div>
+      </div>
+
+    </div>
+    <script src="vendor/vue.js"></script>
+    <script src="panel.js"></script>
+  </body>
+</html>

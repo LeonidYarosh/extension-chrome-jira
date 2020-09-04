@@ -72,27 +72,27 @@
 //         console.log(XHR)
 //     }
 // })(XMLHttpRequest);
-
-(function () {
-    window.testExtension = []
-
-    var original = {
-        open: XMLHttpRequest.prototype.open,
-        send: XMLHttpRequest.prototype.send
-    };
-
-    XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
-        return original.open.call(this, method, url, async, user, password);
-    };
-
-    XMLHttpRequest.prototype.send = function (data) {
-        this.onload = function (evt) {
-            window.testExtension.push(this.responseText)
-        }
-        return original.send.call(this, data);
-    };
-
-}());
+//
+// (function () {
+//     window.testExtension = []
+//
+//     var original = {
+//         open: XMLHttpRequest.prototype.open,
+//         send: XMLHttpRequest.prototype.send
+//     };
+//
+//     XMLHttpRequest.prototype.open = function (method, url, async, user, password) {
+//         return original.open.call(this, method, url, async, user, password);
+//     };
+//
+//     XMLHttpRequest.prototype.send = function (data) {
+//         this.onload = function (evt) {
+//             window.testExtension.push(this.responseText)
+//         }
+//         return original.send.call(this, data);
+//     };
+//
+// }());
 
 // var port = chrome.runtime.connect('fkamkmghdbfhpkbfgaknhjgmnnhiohdj', {name: "knockknock"});
 // port.postMessage({joke: "Knock knock"});
@@ -106,7 +106,6 @@
 
 chrome.runtime.sendMessage('fkamkmghdbfhpkbfgaknhjgmnnhiohdj', {openUrlInEditor: 'url'},
     function(response) {
-        if (!response.success)
-            handleError(url);
+        console.log(response)
     });
 

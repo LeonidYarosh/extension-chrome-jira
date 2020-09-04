@@ -19,5 +19,6 @@
     "scripts": ["background.js"],
     "persistent": true
   },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "devtools_page": "devtools.html"
 }

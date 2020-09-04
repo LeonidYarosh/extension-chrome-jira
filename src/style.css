@@ -1,0 +1,30 @@
+body {
+    background: white;
+    font-size: 16px;
+}
+
+#app {
+    width: 1000px;
+}
+
+.mdl-list__item {
+    align-items: start;
+}
+
+.mdl-list__item .title.mdl-list__item-primary-content {
+    flex: 1 1 150px;
+}
+.mdl-list__item .content.mdl-list__item-secondary-content {
+    flex: 20 1 auto;
+}
+
+.mdl-list__item .content.mdl-list__item-secondary-content .mdl-textfield {
+    width: 100%;
+}
+
+.mdl-list__item-secondary-content {
+    display: flex;
+    flex-direction: row;
+}
+
+
