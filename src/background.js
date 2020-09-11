@@ -55,24 +55,24 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 //   chrome.alarms.create("refresh", { periodInMinutes: 3 });
 // });
 
-chrome.webRequest.onBeforeRequest.addListener(
-    function(details)
-    {
-        console.log(details.requestBody);
-    },
-    {urls: ["https://www.google.com/complete/*"]},
-    ['requestBody']
-);
-
-function logResponse(responseDetails) {
-    debugger
-    console.log(responseDetails);
-}
-
-chrome.webRequest.onCompleted.addListener(
-    logResponse,
-    {urls: ["https://www.google.com/complete/*"]}
-);
+// chrome.webRequest.onBeforeRequest.addListener(
+//     function(details)
+//     {
+//         console.log(details.requestBody);
+//     },
+//     {urls: ["https://www.google.com/complete/*"]},
+//     ['requestBody']
+// );
+//
+// function logResponse(responseDetails) {
+//     debugger
+//     console.log(responseDetails);
+// }
+//
+// chrome.webRequest.onCompleted.addListener(
+//     logResponse,
+//     {urls: ["https://www.google.com/complete/*"]}
+// );
 
 // chrome.alarms.onAlarm.addListener((alarm) => {
 //   console.log(alarm.name); // refresh
