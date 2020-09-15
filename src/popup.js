@@ -1,14 +1,28 @@
 // Future JavaScript will go here
+const app = new Vue({
+  el: "#app",
+  data: {
+    fileName: '',
+    href: '',
+  },
+  components: {
+    "download-btn-popup": DownloadBtnPopup,
+  },
+});
+
 
 function ready() {
   function clickFunc() {
-      // chrome.runtime.sendMessage({testMessage: 'url'},
-      //     function(response) {
-      //         console.log(response)
-      //     });
-      var a = document.getElementById('tophf')
-      console.log(a)
-      debugger
+      chrome.storage.local.get('screenInfo', function ({ screenInfo }) {
+          app.fileName = screenInfo.fileName
+          const blob = screenInfo.imageUrl
+          console.log(blob)
+          // app.href = URL.createObjectURL(blob)
+          app.href = blob
+      });
+      chrome.storage.local.get('reqInfo', function ({ reqInfo }) {
+          console.log(reqInfo)
+      });
   }
 
   var el = document.getElementById("button-click");
@@ -16,7 +30,6 @@ function ready() {
   el.addEventListener("click", clickFunc, false);
 }
 document.addEventListener("DOMContentLoaded", ready);
-
 
 // const port = chrome.runtime.connect({ name: 'foo' });
 // // push a message to the channel
@@ -37,4 +50,3 @@ document.addEventListener("DOMContentLoaded", ready);
 //                 "from the extension");
 //         });
 // })()
-

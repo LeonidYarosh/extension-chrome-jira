@@ -7,16 +7,18 @@
 //     logURL,
 //     {urls: ["<all_urls>"]}
 // );
-// chrome.webRequest.onBeforeRequest.addListener(
-//     function(data)
-//     {
-//         if (data.type === 'xmlhttprequest' && data.url.indexOf('UFS/workflow') !== -1 && data.initiator.indexOf('localhost') !== -1) {
-//             console.log('Body', data, data.requestBody);
-//         }
-//     },
-//     {urls: ["<all_urls>"]},
-//     ['requestBody']
-// );
+chrome.webRequest.onBeforeRequest.addListener(
+    function(data)
+    {
+        if (data.type === 'xmlhttprequest' && data.url.indexOf('UFS/workflow') !== -1 && data.initiator.indexOf('localhost') !== -1) {
+            Promise.all([runPopup()]).then(res => {
+                chrome.storage.local.set({screenInfo: res[0]})
+            })
+        }
+    },
+    {urls: ["<all_urls>"]},
+    ['requestBody']
+);
 // chrome.webRequest.onCompleted.addListener(
 //     function(data)
 //     {
@@ -39,15 +41,14 @@
 //         port.postMessage({answer: "Madame... Bovary"});
 // });
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  debugger;
-  console.log(
-    sender.tab
-      ? "from a content script:" + sender.tab.url
-      : "from the extension"
-  );
-  sendResponse({test: 'test'})
-});
+// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+//   console.log(
+//     sender.tab
+//       ? "from a content script:" + sender.tab.url
+//       : "from the extension"
+//   );
+//   sendResponse({test: 'test'})
+// });
 
 // chrome.runtime.onInstalled.addListener(() => {
 //   console.log("onInstalled...");

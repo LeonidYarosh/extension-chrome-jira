@@ -9,9 +9,12 @@
   </head>
   <body>
     <div id="app">
+      <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner" :class="{'is-active': isFetching && !savedReq.length}"></div>
+
       <download-btn v-for="req in savedReq" :req="req"></download-btn>
 
     </div>
+
     <script src="vendor/vue.js"></script>
     <script src="components/downloadBtn/index.js"></script>
     <script src="panel.js"></script>

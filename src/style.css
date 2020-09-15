@@ -27,4 +27,14 @@ body {
     flex-direction: row;
 }
 
+.mdl-spinner {
+    position: absolute;
+    top: 34%;
+    left: 43%;
+    height: 90px;
+    width: 90px;
+}
 
+#app .mdl-spinner:not(.is-upgraded).is-active:after {
+    content: '';
+}

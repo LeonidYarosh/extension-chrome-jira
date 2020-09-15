@@ -24,7 +24,6 @@ let DownloadBtn = Vue.component('download-btn', {
     },
     computed: {
         fileName: function () {
-            debugger
             let startName = ''
             startFileName.forEach(name => {
                 if (this.req.url.includes(name)) {
@@ -39,7 +38,6 @@ let DownloadBtn = Vue.component('download-btn', {
             Time request: ${this.req.timeReq} \n
             Request body: ${this.req.req} \n
             Response body: ${this.req.res} \n`
-            debugger
             return type + text;
         }
     }

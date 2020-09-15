@@ -89,17 +89,20 @@
       font-size: 40px;
       color: #2f5876;
     }
+
+    .oh-uh {
+      display: none;
+    }
   </style>
   <!--конец объяснения блока со стилями-->
-  <script src="popup.js"></script>
 </head>
 <!--объяснение тега <body>-->
 <body>
 <!--контейнер, содержащий название, логотип и номер версии-->
 <div class="modal-header">
   <h1 class="logo">
-    <img class="logo-icon" src="images/traversy-logo.png" />Запускатор
-    Tproger
+    <img class="logo-icon" src="images/traversy-logo.png" />
+    Запускатор Tproger
     <span class="version">(1.0.0)</span>
   </h1>
 </div>
@@ -109,32 +112,17 @@
   <p>ТЕСТ</p>
   <input value="Нажми меня" id="button-click" type="button">
 </div>
-<!--Конец контейнера-->
-<!--контейнер, содержащий контейнеры с иконками-->
-<div class="modal-icons">
-  <div class="flex-container">
-    <div class="flex">
-      <!--target="_blank" — это служит для открытия новой влкадки при клике по иконке-->
-      <a href="#" target="_blank">
-        <i class="fa fa-globe"></i>
-      </a>
-    </div>
-    <div class="flex">
-      <a href="#" target="_blank">
-        <i class="fa fa-telegram"></i>
-      </a>
-    </div>
-    <div class="flex">
-      <a href="#" target="_blank">
-        <i class="fa fa-vk"></i>
-      </a>
-    </div>
-    <div class="flex">
-      <a href="#" target="_blank">
-        <i class="fa fa-facebook"></i>
-      </a>
-    </div>
-  </div>
+
+<div id="app">
+
+  <download-btn-popup :file-name="fileName" :href="href" ></download-btn-popup>
 </div>
+
+<!--Конец контейнера-->
+<div class="oh-uh">Ошибочка</div>
+<script src="utils/screenshot.js"></script>
+<script src="vendor/vue.js"></script>
+<script src="components/downloadBtnPopup/index.js"></script>
+<script src="popup.js"></script>
 </body>
 </html>
