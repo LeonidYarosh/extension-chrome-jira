@@ -1,12 +1,29 @@
+
+const listenUrlsDev = {
+    workflow: 'UFS/workflow',
+    getVersion: '/static/cards.credit/',
+    init: '/init',
+}
+
+const listenUrlsProd = {
+    workflow: 'UFS/workflow',
+    getVersion: '/sbtsbol-static/ift/cards.credit/',
+    init: '/init',
+}
+
 const app = new Vue({
     el: '#app',
     data: {
         savedReq: [],
         isFetching: false,
+        version: '',
+        buildDate: '',
+        configUrls: listenUrlsProd,
     },
     components: {
-        'download-btn': DownloadBtn
-    }
+        'download-btn': DownloadBtn,
+        'download-all-btn': DownloadAllBtn
+    },
 })
 
 
@@ -27,22 +44,50 @@ const getTimeRequest = (request) => {
     return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
 };
 
+let isFoundVersion = false
+
+
 chrome.devtools.network.onRequestFinished.addListener((request) => {
+
+    // обнуление флага чтобы по несколько раз не устанавливать версию
+    if (
+        request.request &&
+        request.request.url &&
+        request.request.url.includes(app.configUrls.init)
+    ) {
+        isFoundVersion = false
+    }
+    // поиск версии и времени поставки
+    if (
+        !isFoundVersion &&
+        request.request &&
+        request.request.url &&
+        request.request.url.includes(app.configUrls.getVersion)
+    ) {
+        isFoundVersion = true
+        const url = request.request.url
+        app.version = url.match(/credit\/(.*)\//g)[0].split('/')[1]
+        const locationOrigin = request.request.url.split(app.configUrls.getVersion)[0]
+
+        YAML.fromURL(`${locationOrigin}${app.configUrls.getVersion}${app.version}/release.yml`, (yaml) => {
+            app.buildDate = yaml.buildDate
+        })
+    }
+
     request.getContent((body) => {
         if (
             request.request &&
             request.request.url &&
-            request.request.url.includes("UFS/workflow")
+            request.request.url.includes(app.configUrls.workflow)
         ) {
-            console.log(request.request.url)
-            chrome.storage.local.set({
-                reqInfo: {
-                    url: request.request.url,
-                    req: request.request.postData.text,
-                    res: body,
-                    timeReq: getTimeRequest(request)
-                }
+            // chrome.storage.local.set({ reqInfo:
+            app.savedReq.push({
+                url: request.request.url,
+                req: request.request.postData.text,
+                res: body,
+                timeReq: getTimeRequest(request)
             })
+            // })
         }
     });
 });

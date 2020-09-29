@@ -12,10 +12,14 @@
       <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner" :class="{'is-active': isFetching && !savedReq.length}"></div>
 
       <download-btn v-for="req in savedReq" :req="req"></download-btn>
-
+      <download-all-btn :config="configUrls"></download-all-btn>
+      <div>Версия: {{version}}</div>
+      <div>Дата и время сборки: {{buildDate}}</div>
     </div>
 
     <script src="vendor/vue.js"></script>
+    <script src="components/downloadAll/index.js"></script>
+    <script src="vendor/yaml.js"></script>
     <script src="components/downloadBtn/index.js"></script>
     <script src="panel.js"></script>
   </body>

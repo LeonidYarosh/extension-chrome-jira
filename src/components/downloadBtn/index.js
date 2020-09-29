@@ -34,10 +34,10 @@ let DownloadBtn = Vue.component('download-btn', {
         },
         href: function () {
             const type = 'data:text/plain;content-disposition=attachment;filename=file,'
-            const text = `URL: ${this.req.url} \n
-            Time request: ${this.req.timeReq} \n
-            Request body: ${this.req.req} \n
-            Response body: ${this.req.res} \n`
+            const text = `URL: \n${this.req.url} \n
+            Time request: \n${this.req.timeReq} \n
+            Request body: \n${this.req.req} \n
+            Response body: \n${this.req.res} \n`
             return type + text;
         }
     }

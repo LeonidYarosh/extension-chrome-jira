@@ -14,11 +14,10 @@ const app = new Vue({
 function ready() {
   function clickFunc() {
       chrome.storage.local.get('screenInfo', function ({ screenInfo }) {
-          app.fileName = screenInfo.fileName
-          const blob = screenInfo.imageUrl
-          console.log(blob)
-          // app.href = URL.createObjectURL(blob)
-          app.href = blob
+          // app.fileName = screenInfo.fileName
+          // const blob = screenInfo.imageUrl
+          // // app.href = URL.createObjectURL(blob)
+          // app.href = blob
       });
       chrome.storage.local.get('reqInfo', function ({ reqInfo }) {
           console.log(reqInfo)
