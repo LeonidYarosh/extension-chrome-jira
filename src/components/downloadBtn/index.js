@@ -18,19 +18,14 @@ let DownloadBtn = Vue.component('download-btn', {
                     req: '',
                     res: '',
                     timeReq: '',
+                    pageType: ''
                 }
             }
         }
     },
     computed: {
         fileName: function () {
-            let startName = ''
-            startFileName.forEach(name => {
-                if (this.req.url.includes(name)) {
-                    startName = name
-                }
-            })
-            return `${startName || 'unknown'}_${this.req.timeReq.replace(' ', '_')}.txt`
+            return `${this.req.pageType || 'unknown'}_${this.req.timeReq.replace(' ', '_')}.txt`
         },
         href: function () {
             const type = 'data:text/plain;content-disposition=attachment;filename=file,'

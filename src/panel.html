@@ -10,10 +10,20 @@
   <body>
     <div id="app">
       <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner" :class="{'is-active': isFetching && !savedReq.length}"></div>
-
-      <download-btn v-for="req in savedReq" :req="req"></download-btn>
-      <download-all-btn :config="configUrls"></download-all-btn>
-      <div>Версия: {{version}}</div>
+      <div class="container-select-stand">
+        Выберите стенд:
+        <select-stand v-for="(stand, index) in standsList" :stand="stand" v-model="activeStand" :index="index"></select-stand>
+      </div>
+      <div class="container-link-log">
+        Списки логов:
+        <download-btn v-for="req in savedReq" :req="req"></download-btn>
+      </div>
+      <download-all-btn
+              :config="activeStand"
+              :version="version"
+              :buildDate="buildDate"
+      ></download-all-btn>
+      <div class="version" >Версия: {{version}}</div>
       <div>Дата и время сборки: {{buildDate}}</div>
     </div>
 
@@ -21,6 +31,7 @@
     <script src="components/downloadAll/index.js"></script>
     <script src="vendor/yaml.js"></script>
     <script src="components/downloadBtn/index.js"></script>
+    <script src="components/selectStand/index.js"></script>
     <script src="panel.js"></script>
   </body>
 </html>

@@ -5,6 +5,7 @@ body {
 
 #app {
     width: 1000px;
+    padding: 10px;
 }
 
 .mdl-list__item {
@@ -37,4 +38,28 @@ body {
 
 #app .mdl-spinner:not(.is-upgraded).is-active:after {
     content: '';
+}
+
+.container-select-stand {
+    display: flex;
+}
+
+.container-select-stand label {
+    margin: 0 20px;
+}
+
+.container-link-log {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.container-link-log a {
+    margin: 10px 0;
+}
+
+.version {
+    margin-top: 10px;
 }

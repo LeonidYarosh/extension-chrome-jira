@@ -1,13 +1,22 @@
 
 const listenUrlsDev = {
     workflow: 'UFS/workflow',
+    list: 'UFS/list',
     getVersion: '/static/cards.credit/',
     init: '/init',
 }
 
-const listenUrlsProd = {
-    workflow: 'UFS/workflow',
+const listenUrlsIft = {
+    workflow: '/operation-release-ccard-flow',
+    list: '/select-ccard-product/getAvailableProducts',
     getVersion: '/sbtsbol-static/ift/cards.credit/',
+    init: '/init',
+}
+
+const listenUrlsProd = {
+    workflow: '/operation-release-ccard-flow',
+    list: '/select-ccard-product/getAvailableProducts',
+    getVersion: 'PL/cards.credit/',
     init: '/init',
 }
 
@@ -19,11 +28,18 @@ const app = new Vue({
         version: '',
         buildDate: '',
         configUrls: listenUrlsProd,
+        standsList: [
+            {name: 'dev', config: listenUrlsDev },
+            {name: 'ift', config: listenUrlsIft },
+            {name: 'prod', config: listenUrlsProd },
+        ],
+        activeStand: listenUrlsDev
     },
     components: {
         'download-btn': DownloadBtn,
-        'download-all-btn': DownloadAllBtn
-    },
+        'download-all-btn': DownloadAllBtn,
+        'select-stand': SelectStand,
+    }
 })
 
 
@@ -53,7 +69,7 @@ chrome.devtools.network.onRequestFinished.addListener((request) => {
     if (
         request.request &&
         request.request.url &&
-        request.request.url.includes(app.configUrls.init)
+        request.request.url.includes(app.activeStand.init)
     ) {
         isFoundVersion = false
     }
@@ -62,14 +78,14 @@ chrome.devtools.network.onRequestFinished.addListener((request) => {
         !isFoundVersion &&
         request.request &&
         request.request.url &&
-        request.request.url.includes(app.configUrls.getVersion)
+        request.request.url.includes(app.activeStand.getVersion)
     ) {
         isFoundVersion = true
         const url = request.request.url
-        app.version = url.match(/credit\/(.*)\//g)[0].split('/')[1]
-        const locationOrigin = request.request.url.split(app.configUrls.getVersion)[0]
+        app.version = url.match(/credit\/(.*)\//g)[0].split('/')[1] || 'dev'
+        const locationOrigin = request.request.url.split(app.activeStand.getVersion)[0]
 
-        YAML.fromURL(`${locationOrigin}${app.configUrls.getVersion}${app.version}/release.yml`, (yaml) => {
+        YAML.fromURL(`${locationOrigin}${app.activeStand.getVersion}${app.version}/release.yml`, (yaml) => {
             app.buildDate = yaml.buildDate
         })
     }
@@ -78,14 +94,17 @@ chrome.devtools.network.onRequestFinished.addListener((request) => {
         if (
             request.request &&
             request.request.url &&
-            request.request.url.includes(app.configUrls.workflow)
+            (request.request.url.includes(app.activeStand.workflow) || request.request.url.includes(app.activeStand.list))
         ) {
+            let pageType = request.request.url.includes(app.activeStand.workflow) ? 'workflow' : ''
+            pageType = request.request.url.includes(app.activeStand.list) ? 'list' : pageType
             // chrome.storage.local.set({ reqInfo:
             app.savedReq.push({
                 url: request.request.url,
                 req: request.request.postData.text,
                 res: body,
-                timeReq: getTimeRequest(request)
+                timeReq: getTimeRequest(request),
+                pageType: pageType,
             })
             // })
         }
