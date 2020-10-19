@@ -29,11 +29,12 @@ const app = new Vue({
         buildDate: '',
         configUrls: listenUrlsProd,
         standsList: [
-            {name: 'dev', config: listenUrlsDev },
-            {name: 'ift', config: listenUrlsIft },
-            {name: 'prod', config: listenUrlsProd },
+            { url: 'localhost', name: 'dev', config: listenUrlsDev },
+            { url: 'front.ift-node', name: 'ift', config: listenUrlsIft },
+            { url: 'front.greenfield', name: 'prod', config: listenUrlsProd },
         ],
-        activeStand: listenUrlsDev
+        activeStand: listenUrlsDev,
+        isIdentifiedStand: false,
     },
     components: {
         'download-btn': DownloadBtn,
@@ -64,6 +65,20 @@ let isFoundVersion = false
 
 
 chrome.devtools.network.onRequestFinished.addListener((request) => {
+
+    if (
+        !app.isIdentifiedStand &&
+        request.request &&
+        request.request.url &&
+        request.request.url.includes('cards.credit')) {
+        app.standsList.forEach(stand => {
+            if (request.request.url.includes(stand.url)) {
+                console.log('done', request.request.url)
+                app.activeStand = stand.config
+                app.isIdentifiedStand = true
+            }
+        })
+    }
 
     // обнуление флага чтобы по несколько раз не устанавливать версию
     if (
