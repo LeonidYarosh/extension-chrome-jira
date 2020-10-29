@@ -2,26 +2,37 @@
 const app = new Vue({
   el: "#app",
   data: {
-    fileName: '',
-    href: '',
+    savedReq: [],
+    version: '',
+    buildDate: '',
+    activeStand: null
   },
   components: {
-    "download-btn-popup": DownloadBtnPopup,
+    'download-btn': DownloadBtn,
+    'download-all-btn': DownloadAllBtn,
   },
 });
 
 
 function ready() {
   function clickFunc() {
-      chrome.storage.local.get('screenInfo', function ({ screenInfo }) {
-          // app.fileName = screenInfo.fileName
-          // const blob = screenInfo.imageUrl
-          // // app.href = URL.createObjectURL(blob)
-          // app.href = blob
-      });
-      chrome.storage.local.get('reqInfo', function ({ reqInfo }) {
-          console.log(reqInfo)
-      });
+      chrome.storage.local.get(
+        ["reqInfo", "activeStand", "version", "buildDate"],
+        function ({ reqInfo, activeStand, version, buildDate }) {
+          if (reqInfo && reqInfo.length) {
+            app.savedReq = reqInfo;
+          }
+          if (activeStand) {
+            app.activeStand = activeStand;
+          }
+          if (version) {
+            app.version = version;
+          }
+          if (buildDate) {
+            app.buildDate = buildDate;
+          }
+        }
+      );
   }
 
   var el = document.getElementById("button-click");

@@ -73,7 +73,8 @@ chrome.devtools.network.onRequestFinished.addListener((request) => {
         request.request.url.includes('cards.credit')) {
         app.standsList.forEach(stand => {
             if (request.request.url.includes(stand.url)) {
-                console.log('done', request.request.url)
+
+                chrome.storage.local.set({ activeStand: stand.config })
                 app.activeStand = stand.config
                 app.isIdentifiedStand = true
             }
@@ -98,10 +99,13 @@ chrome.devtools.network.onRequestFinished.addListener((request) => {
         isFoundVersion = true
         const url = request.request.url
         app.version = url.match(/credit\/(.*)\//g)[0].split('/')[1] || 'dev'
+
+        chrome.storage.local.set({ version: app.version })
         const locationOrigin = request.request.url.split(app.activeStand.getVersion)[0]
 
         YAML.fromURL(`${locationOrigin}${app.activeStand.getVersion}${app.version}/release.yml`, (yaml) => {
             app.buildDate = yaml.buildDate
+            chrome.storage.local.set({ buildDate: app.buildDate })
         })
     }
 
@@ -113,7 +117,7 @@ chrome.devtools.network.onRequestFinished.addListener((request) => {
         ) {
             let pageType = request.request.url.includes(app.activeStand.workflow) ? 'workflow' : ''
             pageType = request.request.url.includes(app.activeStand.list) ? 'list' : pageType
-            // chrome.storage.local.set({ reqInfo:
+
             app.savedReq.push({
                 url: request.request.url,
                 req: request.request.postData.text,
@@ -121,7 +125,7 @@ chrome.devtools.network.onRequestFinished.addListener((request) => {
                 timeReq: getTimeRequest(request),
                 pageType: pageType,
             })
-            // })
+            chrome.storage.local.set({ reqInfo: app.savedReq })
         }
     });
 });
