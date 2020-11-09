@@ -30,6 +30,7 @@ const app = new Vue({
         standsList: [
             { url: 'localhost', name: 'dev', config: listenUrlsDev },
             { url: 'front.ift-node', name: 'ift', config: listenUrlsIft },
+            { url: 'front-ift-node', name: 'ift-desktop', config: listenUrlsIft }, // https://ift-stat.testonline.sberbank.ru:4463/sbtsbol-static/ift/cards.credit/r-4.3/release.yml
             { url: 'front.greenfield', name: 'prod', config: listenUrlsProd },
         ],
         activeStand: listenUrlsDev,
@@ -72,7 +73,6 @@ chrome.devtools.network.onRequestFinished.addListener((request) => {
         request.request.url.includes('cards.credit')) {
         app.standsList.forEach(stand => {
             if (request.request.url.includes(stand.url)) {
-
                 chrome.storage.local.set({ activeStand: stand.config })
                 app.activeStand = stand.config
                 app.isIdentifiedStand = true

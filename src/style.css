@@ -63,3 +63,12 @@ body {
 .version {
     margin-top: 10px;
 }
+
+.container-link-log a:link, .container-link-log a:visited, .container-link-log a {
+    color: #ff4081;
+    font-weight: 500;
+}
+
+.container-link-log a:hover {
+    text-decoration: underline;
+}
