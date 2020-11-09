@@ -1,4 +1,3 @@
-
 const listenUrlsDev = {
     workflow: 'UFS/workflow',
     list: 'UFS/list',
@@ -128,4 +127,28 @@ chrome.devtools.network.onRequestFinished.addListener((request) => {
             chrome.storage.local.set({ reqInfo: app.savedReq })
         }
     });
+});
+
+chrome.runtime.onConnect.addListener(function(port) {
+    if (port.name === 'downloadHAR') {
+        port.onMessage.addListener(function(msg) {
+            if (msg.isGetHAR) {
+                new Promise(() => {
+                    chrome.devtools.network.getHAR((har) => {
+                        const {
+                            url,
+                            fileName
+                        } = formattingHAR({
+                            config: app.activeStand,
+                            version: app.version,
+                            buildDate: app.buildDate,
+                            har
+                        })
+
+                        port.postMessage({ url, fileName })
+                    })
+                });
+            }
+        })
+    }
 });

@@ -5,20 +5,36 @@ let DownloadAllBtn = Vue.component('download-all-btn', {
     props: ['config', 'version', 'buildDate'],
     methods: {
         handleClick() {
-            chrome.devtools.network.getHAR((har) => {
-                 har.entries = har.entries.filter(el =>
-                     el._resourceType === 'xhr' && (el.request.url.includes(this.config.workflow) || el.request.url.includes(this.config.init))
-                 )
-
-                let harBLOB = new Blob([JSON.stringify({log: har})])
-                let url = URL.createObjectURL(harBLOB)
-                const fileName = `HAR-log-${this.version || ''}-${this.buildDate || ''}`
-
-                chrome.downloads.download({
-                    url: url,
-                    filename: fileName,
+            if (!chrome.devtools) {
+                const port = chrome.runtime.connect({name: "downloadHAR"})
+                port.postMessage({ isGetHAR: true })
+                port.onMessage.addListener((response) => {
+                    if (response.url && response.fileName) {
+                        chrome.downloads.download({
+                            url: response.url,
+                            filename: response.fileName,
+                        });
+                    }
                 });
-            })
+            }
+            else {
+                chrome.devtools.network.getHAR((har) => {
+                    const {
+                        url,
+                        fileName
+                    } = formattingHAR({
+                        config: this.config,
+                        version: this.version,
+                        buildDate: this.buildDate,
+                        har
+                    })
+
+                    chrome.downloads.download({
+                        url: url,
+                        filename: fileName,
+                    });
+                })
+            }
         }
     }
 })

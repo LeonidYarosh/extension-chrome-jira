@@ -23,6 +23,7 @@
               :config="activeStand"
               :version="version"
               :buildDate="buildDate"
+              :isPopup="isPopup"
       ></download-all-btn>
       <div class="version" >Версия: {{version}}</div>
       <div>Дата и время сборки: {{buildDate}}</div>
@@ -30,6 +31,7 @@
 
     <script src="vendor/vue.js"></script>
     <script src="vendor/yaml.js"></script>
+    <script src="./utils/index.js"></script>
     <script src="components/downloadAll/index.js"></script>
     <script src="components/downloadBtn/index.js"></script>
     <script src="components/selectStand/index.js"></script>
